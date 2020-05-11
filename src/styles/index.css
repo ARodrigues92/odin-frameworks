@@ -1,0 +1,25 @@
+.library {
+  display: flex;
+  justify-content: center;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 0 1%;
+  margin: 0 10px;
+}
+
+.book-elements {
+  margin: 10px 0;
+}
+
+.book-elements p {
+  margin: 10px 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+}
