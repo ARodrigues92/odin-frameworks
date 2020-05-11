@@ -9,14 +9,20 @@ function EditBook(props) {
 }
 
 function DeleteBook(props) {
-  return <button type="button">Delete</button>;
+  const { id, onDelete } = props;
+  return (
+    <button type="button" onClick={() => onDelete(id)}>
+      Delete
+    </button>
+  );
 }
 
 function BookControls(props) {
+  const { id, onDelete } = props;
   return (
     <div className="controls book-elements">
       <EditBook />
-      <DeleteBook />
+      <DeleteBook id={id} onDelete={onDelete} />
     </div>
   );
 }
@@ -63,12 +69,12 @@ function BookDetails(props) {
 }
 
 function Book(props) {
-  const { title, author, pages, isRead } = props;
+  const { id, title, author, pages, isRead, onDelete } = props;
   return (
     <div className="book">
       <BookDetails title={title} author={author} pages={pages} />
       <ReadCheckBox isRead={isRead} />
-      <BookControls />
+      <BookControls id={id} onDelete={onDelete} />
     </div>
   );
 }
@@ -79,6 +85,15 @@ class Library extends React.Component {
     this.state = {
       books: sampleData,
     };
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleDelete(id) {
+    const { books } = this.state;
+    const newBooks = books.filter((e) => e.id !== id);
+    this.setState({
+      books: newBooks,
+    });
   }
 
   render() {
@@ -87,10 +102,12 @@ class Library extends React.Component {
       return (
         <Book
           key={e.id}
+          id={e.id}
           title={e.title}
           author={e.author}
           pages={e.pages}
           isRead={e.read}
+          onDelete={this.handleDelete}
         />
       );
     });
