@@ -28,7 +28,7 @@ function BookControls(props) {
 }
 
 function ReadCheckBox(props) {
-  const { isRead } = props;
+  const { id, isRead, onReadChange } = props;
   return (
     <div className="checkbox-container book-elements">
       <form>
@@ -39,8 +39,7 @@ function ReadCheckBox(props) {
             name="read"
             type="checkbox"
             checked={isRead}
-            // onReadChange={handleChange}
-            // Create handler function
+            onChange={() => onReadChange(id)}
           />
         </label>
       </form>
@@ -69,11 +68,11 @@ function BookDetails(props) {
 }
 
 function Book(props) {
-  const { id, title, author, pages, isRead, onDelete } = props;
+  const { id, title, author, pages, isRead, onReadChange, onDelete } = props;
   return (
     <div className="book">
       <BookDetails title={title} author={author} pages={pages} />
-      <ReadCheckBox isRead={isRead} />
+      <ReadCheckBox id={id} isRead={isRead} onReadChange={onReadChange} />
       <BookControls id={id} onDelete={onDelete} />
     </div>
   );
@@ -86,6 +85,20 @@ class Library extends React.Component {
       books: sampleData,
     };
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleReadChange = this.handleReadChange.bind(this);
+  }
+
+  handleReadChange(id) {
+    const { books } = this.state;
+    const newBooks = books.map((e) => {
+      if (e.id === id) {
+        e.read = e.read !== true;
+      }
+      return e;
+    });
+    this.setState({
+      books: newBooks,
+    });
   }
 
   handleDelete(id) {
@@ -107,6 +120,7 @@ class Library extends React.Component {
           author={e.author}
           pages={e.pages}
           isRead={e.read}
+          onReadChange={this.handleReadChange}
           onDelete={this.handleDelete}
         />
       );
