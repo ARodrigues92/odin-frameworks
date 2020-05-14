@@ -52,9 +52,20 @@
   background-color: white;
   width: 30%;
   height: 40%;
+}
+
+.form-container {
+  margin-top: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.close {
+  float: right;
+  font-size: 30px;
+  border: none;
+  background-color: transparent;
 }
 
 .form {
@@ -83,8 +94,6 @@
 
 .input-group label {
   width: 40%;
-  /* display: flex;
-  align-items: center; */
 }
 
 .input-group input {

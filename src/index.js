@@ -108,65 +108,76 @@ function NewBook(props) {
 }
 
 function Form(props) {
-  const { showForm, editData, handleValueChange, handleSubmit } = props;
+  const {
+    showForm,
+    closeForm,
+    editData,
+    handleValueChange,
+    handleSubmit,
+  } = props;
   const { title, author, pages, read } = editData;
   const modalClasses = showForm ? 'modal' : 'modal display-none';
   return (
     <div className={modalClasses}>
       <div className="modal-main">
-        <form className="form" onSubmit={handleSubmit}>
-          <label className="label" htmlFor="title">
-            Title
-            <input
-              className="input"
-              id="title"
-              name="title"
-              type="text"
-              value={title}
-              onChange={handleValueChange}
-              required
-            />
-          </label>
-          <label className="label" htmlFor="author">
-            Author
-            <input
-              className="input"
-              id="author"
-              name="author"
-              type="text"
-              value={author}
-              onChange={handleValueChange}
-              required
-            />
-          </label>
-          <div className="input-group">
-            <label className="label" htmlFor="pages">
-              Pages
+        <button type="button" className="close" onClick={closeForm}>
+          X
+        </button>
+        <div className="form-container">
+          <form className="form" onSubmit={handleSubmit}>
+            <label className="label" htmlFor="title">
+              Title
               <input
                 className="input"
-                id="pages"
-                name="pages"
-                type="number"
-                min="0"
-                value={pages}
+                id="title"
+                name="title"
+                type="text"
+                value={title}
                 onChange={handleValueChange}
                 required
               />
             </label>
-            <label className="label" htmlFor="is-read">
-              Read ?
+            <label className="label" htmlFor="author">
+              Author
               <input
                 className="input"
-                id="is-read"
-                name="read"
-                type="checkbox"
-                checked={read}
+                id="author"
+                name="author"
+                type="text"
+                value={author}
                 onChange={handleValueChange}
+                required
               />
             </label>
-          </div>
-          <input className="submit" type="submit" value="Submit" />
-        </form>
+            <div className="input-group">
+              <label className="label" htmlFor="pages">
+                Pages
+                <input
+                  className="input"
+                  id="pages"
+                  name="pages"
+                  type="number"
+                  min="0"
+                  value={pages}
+                  onChange={handleValueChange}
+                  required
+                />
+              </label>
+              <label className="label" htmlFor="is-read">
+                Read ?
+                <input
+                  className="input"
+                  id="is-read"
+                  name="read"
+                  type="checkbox"
+                  checked={read}
+                  onChange={handleValueChange}
+                />
+              </label>
+            </div>
+            <input className="submit" type="submit" value="Submit" />
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -187,6 +198,7 @@ class Library extends React.Component {
         read: false,
       },
     };
+    this.closeForm = this.closeForm.bind(this);
     this.handleReadChange = this.handleReadChange.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -194,6 +206,20 @@ class Library extends React.Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleAddSubmit = this.handleAddSubmit.bind(this);
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
+  }
+
+  closeForm() {
+    this.setState({
+      showForm: false,
+      isEdit: false,
+      editData: {
+        id: 0,
+        title: '',
+        author: '',
+        pages: '',
+        read: false,
+      },
+    });
   }
 
   handleReadChange(id) {
@@ -322,6 +348,7 @@ class Library extends React.Component {
         <NewBook onClick={this.handleAddButtonClick} />
         <Form
           showForm={showForm}
+          closeForm={this.closeForm}
           isEdit={isEdit}
           editData={editData}
           handleValueChange={this.handleValueChange}
